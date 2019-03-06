@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: sbscl
+Bundle-SymbolicName: org.insilico.vissim.sbscl
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Draeger Lab
+Automatic-Module-Name: org.insilico.vissim.sbscl
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.eclipse.core.resources
+Export-Package: org.insilico.vissim.sbscl
