@@ -46,11 +46,11 @@ public class VisSimView {
 		final NumberAxis xAxis = new NumberAxis(1, GEN_NUMS_COUNT - 1, 1);
 		final NumberAxis yAxis = new NumberAxis();
 		final LineChart<Number, Number> ac = new LineChart<>(xAxis, yAxis);
-		ac.setTitle("Fully unrelevant title");
+		ac.setTitle("Fully irrelevant title");
 		XYChart.Series<Number, Number> dataStreamOrange = new XYChart.Series<Number, Number>();
 		XYChart.Series<Number, Number> dataStreamBlueYellow = new XYChart.Series<Number, Number>();
-		dataStreamOrange.setName("Fully unrelevant data");
-		dataStreamBlueYellow.setName("Even more unrelevant data");
+		dataStreamOrange.setName("Fully irrelevant data");
+		dataStreamBlueYellow.setName("Even more irrelevant data");
 		Random rand = new Random();
 		genRandomData(dataStreamOrange, dataStreamBlueYellow, rand);
 		ac.getData().addAll(dataStreamOrange, dataStreamBlueYellow);
