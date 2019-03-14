@@ -1,4 +1,4 @@
-package org.insilico.vissim.sbscl;
+package org.insilico.vissim.sbscl.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +31,7 @@ import org.simulator.sedml.SedMLSBMLSimulatorExecutor;
  * general intention is to provide prepared data for JFX visualization.
  * 
  */
-public class VisSimSBSCLUtils {
+public class SBSCLUtils {
 	SBMLReader reader = new SBMLReader();
 
 	/**
