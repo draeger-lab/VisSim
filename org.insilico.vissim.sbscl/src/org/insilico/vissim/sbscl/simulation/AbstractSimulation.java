@@ -5,24 +5,29 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.fx.core.ThreadSynchronize;
+import org.simulator.math.odes.MultiTable;
 
 /**
  * Base class for VisSim simulation.
  * 
- * */
-abstract public class Simulation {
+ */
+abstract public class AbstractSimulation {
 	@Inject
 	ThreadSynchronize sync;
+	
 
-	public void run() {
+	public void run(String path) {
 		Job job = Job.create("Run simulation...", (ICoreRunnable) monitor -> {
-			simulate();
-			sync.asyncExec(() -> {
-				// inform UI
-			});
+			try {
+				simulate(path);
+			} catch (Exception e) {
+				sync.asyncExec(() -> {
+					// inform UI
+				});
+			}
 		});
 		job.schedule();
 	}
 
-	public abstract SimulationResult simulate();
+	public abstract MultiTable simulate(String path) throws Exception;
 }
