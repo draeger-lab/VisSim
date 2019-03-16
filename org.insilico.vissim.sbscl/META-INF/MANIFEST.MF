@@ -11,6 +11,8 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.fx.ui.services,
  org.eclipse.core.jobs,
  org.eclipse.core.runtime
-Export-Package: org.insilico.vissim.sbscl.simulation,
+Export-Package: org.insilico.vissim.sbscl.factory,
+ org.insilico.vissim.sbscl.simulation,
  org.insilico.vissim.sbscl.utils
 Import-Package: org.eclipse.fx.core
+Bundle-ActivationPolicy: lazy

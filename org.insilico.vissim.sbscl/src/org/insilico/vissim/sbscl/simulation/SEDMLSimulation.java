@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import org.insilico.vissim.sbscl.factory.ResultAdapter;
+import org.insilico.vissim.sbscl.factory.SimulationResult;
 import org.jlibsedml.AbstractTask;
 import org.jlibsedml.Libsedml;
 import org.jlibsedml.Output;
@@ -21,7 +23,7 @@ public class SEDMLSimulation extends AbstractSimulation {
 	 *         visualization
 	 */
 	@Override
-	public MultiTable simulate(String path) throws Exception {
+	public SimulationResult simulate(String path) throws Exception {
 		File file = new File(path);
 		String sedmlDir = file.getAbsoluteFile().getParentFile().getAbsolutePath();
 		SEDMLDocument doc = Libsedml.readDocument(file);
@@ -37,7 +39,7 @@ public class SEDMLSimulation extends AbstractSimulation {
 			Map results = exe.runSimulations();
 			@SuppressWarnings("unchecked")
 			MultiTable solution = (MultiTable) exe.processSimulationResults(wanted, results);
-			return solution;
+			return new ResultAdapter(solution).getResult();
 		}
 		return null;
 	}

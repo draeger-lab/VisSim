@@ -3,6 +3,8 @@ package org.insilico.vissim.sbscl.simulation;
 import java.io.File;
 import java.util.Map;
 
+import org.insilico.vissim.sbscl.factory.ResultAdapter;
+import org.insilico.vissim.sbscl.factory.SimulationResult;
 import org.jlibsedml.Libsedml;
 import org.jlibsedml.Output;
 import org.jlibsedml.SEDMLDocument;
@@ -20,7 +22,7 @@ public class OMEXSimulation extends AbstractSimulation {
 	 *         visualization
 	 */
 	@Override
-	public MultiTable simulate(String path) throws Exception {
+	public SimulationResult simulate(String path) throws Exception {
 		try {
 			OMEXArchive archive = new OMEXArchive(new File(path));
 			if (archive.containsSBMLModel() && archive.containsSEDMLDescp()) {
@@ -38,7 +40,7 @@ public class OMEXSimulation extends AbstractSimulation {
 				Map res = exe.runSimulations(); // XXX: parametrize
 				@SuppressWarnings("unchecked")
 				MultiTable solution = (MultiTable) exe.processSimulationResults(wanted, res);
-				return solution;
+				return new ResultAdapter(solution).getResult();
 			} else {
 				// XXX:
 				// Not enough for simulation

@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.fx.core.ThreadSynchronize;
+import org.insilico.vissim.sbscl.factory.SimulationResult;
 import org.simulator.math.odes.MultiTable;
 
 /**
@@ -29,5 +30,5 @@ abstract public class AbstractSimulation {
 		job.schedule();
 	}
 
-	public abstract MultiTable simulate(String path) throws Exception;
+	public abstract SimulationResult simulate(String path) throws Exception;
 }

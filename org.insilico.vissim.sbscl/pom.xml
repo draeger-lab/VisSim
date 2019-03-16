@@ -40,13 +40,13 @@
 		</repository>
 	</repositories>
 	<dependencies>
-	<dependency>
-		<groupId>org.simulator</groupId>
-		<artifactId>sbscl</artifactId>
-		<version>1.5</version>
-		<scope>system</scope>
-		<systemPath>${project.basedir}/res/sbscl-1.5.jar</systemPath>
-	</dependency>
+		<dependency>
+			<groupId>org.simulator</groupId>
+			<artifactId>sbscl</artifactId>
+			<version>1.5</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/res/sbscl-1.5.jar</systemPath>
+		</dependency>
 		<dependency>
 			<groupId>org.sbml.jsbml</groupId>
 			<artifactId>jsbml</artifactId>
