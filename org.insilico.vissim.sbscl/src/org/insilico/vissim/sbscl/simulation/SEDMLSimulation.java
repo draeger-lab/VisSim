@@ -24,7 +24,7 @@ public class SEDMLSimulation extends AbstractSimulation {
 	 */
 	@Override
 	public SimulationResult simulate(String path) throws Exception {
-		File file = new File(path);
+		File file = new File(path.replace("file:", ""));
 		String sedmlDir = file.getAbsoluteFile().getParentFile().getAbsolutePath();
 		SEDMLDocument doc = Libsedml.readDocument(file);
 		SedML sedml = doc.getSedMLModel();

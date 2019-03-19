@@ -43,7 +43,7 @@ public class ResultAdapter {
 			}
 			layers.add(layer);
 		}
-		return new SimulationResult(table.getTimePoints(), layers);
+		return new SimulationResult(table.getTimePoints(), layers, table.getName());
 	}
 	
 }

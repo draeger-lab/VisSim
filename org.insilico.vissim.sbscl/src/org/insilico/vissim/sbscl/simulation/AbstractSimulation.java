@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.ICoreRunnable;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.fx.core.ThreadSynchronize;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
-import org.simulator.math.odes.MultiTable;
 
 /**
  * Base class for VisSim simulation.

@@ -6,10 +6,12 @@ import org.insilico.vissim.sbscl.result.Layer;
 
 public class SimulationResult {
 	private double[] timePoints;
-	public SimulationResult(double[] timePoints, LinkedList<Layer> layers) {
+	private String simulationName;
+	public SimulationResult(double[] timePoints, LinkedList<Layer> layers, String simulationName) {
 		super();
 		this.timePoints = timePoints;
 		this.layers = layers;
+		this.simulationName = simulationName;
 	}
 
 	private LinkedList<Layer> layers;
@@ -28,5 +30,13 @@ public class SimulationResult {
 
 	public void setLayers(LinkedList<Layer> layers) {
 		this.layers = layers;
+	}
+
+	public String getSimulationName() {
+		return simulationName;
+	}
+
+	public void setSimulationName(String simulationName) {
+		this.simulationName = simulationName;
 	}
 }
