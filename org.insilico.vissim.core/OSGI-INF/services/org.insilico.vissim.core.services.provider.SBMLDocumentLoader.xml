@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.insilico.vissim.core.services.provider.VisSimDocumentLoader">
-   <property name="service.context.key" value="org.simulator.math.odes.MultiTable"/>
+   <property name="service.context.key" value="org.insilico.vissim.sbscl.factory.SimulationResult"/>
    <service>
       <provide interface="org.eclipse.e4.core.contexts.IContextFunction"/>
    </service>

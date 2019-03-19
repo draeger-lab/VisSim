@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane prefHeight="377.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.insilico.vissim.core.editor.VisSimView">
+   <top>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+          <Button mnemonicParsing="false" style="-fx-background-image: url('res/start_task.gif');-fx-background-size: 18 18;-fx-background-repeat: no-repeat;-fx-background-position:left;" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+            <Button mnemonicParsing="false" text="Button" />
+        </items>
+      </ToolBar>
+   </top>
+   <bottom>
+      <Accordion maxHeight="300.0" BorderPane.alignment="BOTTOM_CENTER">
+        <panes>
+          <TitledPane animated="true" text="Default name">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0" />
+            </content>
+          </TitledPane>
+        </panes>
+      </Accordion>
+   </bottom>
+</BorderPane>

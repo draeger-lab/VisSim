@@ -10,12 +10,12 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component
 public class VisSimEditorProvider implements EditorClassURLProvider {
-	private final static String DATA_TYPE = "sim";
+	private final static String[] DATA_TYPE = {"xml", "zip"};
 	private final static String CORE_BUNDLE = "bundleclass://org.insilico.vissim.core/";
 
 	@Override
 	public boolean test(String t) {
-		return t.endsWith(DATA_TYPE);
+		return t.endsWith(DATA_TYPE[0]) || t.endsWith(DATA_TYPE[1]);
 	}
 
 	@Override
