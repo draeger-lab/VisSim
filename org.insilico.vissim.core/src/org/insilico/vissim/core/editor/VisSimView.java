@@ -18,9 +18,13 @@ import org.insilico.vissim.sbscl.result.Layer;
 import org.insilico.vissim.sbscl.result.Quantity;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -28,10 +32,14 @@ import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 
 /**
  * VisSim main view
@@ -108,38 +116,77 @@ public class VisSimView {
 	private TableView<Quantity> initTable(SimulationResult result) {
 		ObservableList<Quantity> data = rearrangeData(result.getLayers().get(0).getQuantities());
 		TableView<Quantity> table = new TableView<>(data);
+
 		table.getColumns().setAll(createColumns(result.getLayers().get(0).getQuantities().get(0)));
 		return table;
 	}
+
 
 	/**
 	 * Reshuffle simulation values into corresponding columns
 	 */
 	private ObservableList<Quantity> rearrangeData(LinkedList<Quantity> quantities) {
-		return FXCollections
-				.observableArrayList(quantities);
+		return FXCollections.observableArrayList(quantities);
 	}
-
 
 	/**
 	 * Initialize table header
 	 */
-	private List<TableColumn<Quantity, String>> createColumns(Quantity q) {
-		return IntStream.range(-1, q.getResults().length).mapToObj(this::createColumn).collect(Collectors.toList());
+	private List<TableColumn<Quantity, ?>> createColumns(Quantity q) {
+		return IntStream.range(-2, q.getResults().length).mapToObj(this::createColumn).collect(Collectors.toList());
 	}
 
 	/**
 	 * Create new column
 	 */
-	private TableColumn<Quantity, String> createColumn(int c) {
-		TableColumn<Quantity, String> col;
-		if (c == -1) {
-			col = new TableColumn<>("Name");
+	private TableColumn<Quantity, ?> createColumn(int c) {
+		if (c == -2) {
+			TableColumn<Quantity, Boolean> col = new TableColumn<Quantity, Boolean>("");
+			setFactoriesForCheckBoxCol(col);
+			return col;
+		} else if (c == -1) {
+			TableColumn<Quantity, String> col = new TableColumn<>("Name");
 			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(param.getValue().getQuantityName()));
+			return col;
 		} else {
-			col = new TableColumn<>(c + "");
-			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(Double.toString(param.getValue().getResults()[c])));
+			TableColumn<Quantity, String> col = new TableColumn<>(c + "");
+			col.setCellValueFactory(
+					param -> new ReadOnlyObjectWrapper<String>(Double.toString(param.getValue().getResults()[c])));
+			return col;
 		}
-		return col;
+	}
+
+	/**
+	 * Set ups for additional checkbox column. Contributes separate checkbox for every column in
+	 * the table. Should be connected with corresponding {@link Quantity}.
+	 * 
+	 */
+	private void setFactoriesForCheckBoxCol(TableColumn<Quantity, Boolean> col) {
+		col.setCellValueFactory(new Callback<CellDataFeatures<Quantity, Boolean>, ObservableValue<Boolean>>() {
+			@Override
+			public ObservableValue<Boolean> call(CellDataFeatures<Quantity, Boolean> param) {
+				Quantity quantity = param.getValue();
+
+				SimpleBooleanProperty booleanProp = new SimpleBooleanProperty(quantity.isShown());
+				booleanProp.addListener(new ChangeListener<Boolean>() {
+
+					@Override
+					public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+							Boolean newValue) {
+						quantity.setShown(newValue);
+					}
+				});
+				return booleanProp;
+			}
+		});
+
+		col.setCellFactory(new Callback<TableColumn<Quantity, Boolean>, TableCell<Quantity, Boolean>>() {
+			@Override
+			public TableCell<Quantity, Boolean> call(TableColumn<Quantity, Boolean> p) {
+				CheckBoxTableCell<Quantity, Boolean> cell = new CheckBoxTableCell<Quantity, Boolean>();
+				cell.setAlignment(Pos.CENTER);
+				return cell;
+			}
+		});
 	}
 }
