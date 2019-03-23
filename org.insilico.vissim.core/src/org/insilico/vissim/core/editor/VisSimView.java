@@ -7,9 +7,9 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.eclipse.e4.ui.model.application.MApplication;
-import org.eclipse.e4.ui.model.application.ui.basic.MPartStack;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.insilico.ui.utils.DialogUtils;
+import org.insilico.vissim.core.services.UIManager;
 import org.insilico.vissim.core.table.TableType;
 import org.insilico.vissim.core.table.VisSimTableFactory;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
@@ -45,16 +45,10 @@ public class VisSimView {
 
 	@PostConstruct
 	private void init(BorderPane parent) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("VisSim.fxml"));
-		hideUnusedParts();
-		BorderPane simulationPane = null;
-		try {
-			simulationPane = (BorderPane) loader.load();
-		} catch (IOException e) {
-			new DialogUtils().showConfirmationDialog("Initialization error", "Something went wrong.",
-					"JavaFx is not found. Check if JFX is a part of JRE", AlertType.ERROR, e);
-		}
-		final LineChart<Number, Number> lineChart = initChart(simulationResult);
+		UIManager.hideBottomWorkbenchPart(service, application);
+		UIManager.hideRightWorkbenchPart(service, application);
+		BorderPane simulationPane = loadFXML("VisSim.fxml");
+		LineChart<Number, Number> lineChart = initChart(simulationResult);
 		Accordion bottom = (Accordion) simulationPane.getBottom();
 		TitledPane titledPane = bottom.getPanes().get(0);
 		titledPane.setText("Details: " + lineChart.getTitle());
@@ -65,13 +59,18 @@ public class VisSimView {
 	}
 
 	/**
-	 * Hide unused workbench parts
-	 */
-	private void hideUnusedParts() {
-		MPartStack stack = (MPartStack) service.find("org.insilico.ui.partstack.0", application);
-		stack.setVisible(false);
-		MPartStack stack1 = (MPartStack) service.find("org.insilico.ui.partstack.1", application);
-		stack1.setVisible(false);
+	 * Load corresponding FXML configuration file. Show error dialog if not possible.
+	 * */
+	private BorderPane loadFXML(String path) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+		BorderPane simulationPane = null;
+		try {
+			simulationPane = (BorderPane) loader.load();
+		} catch (IOException e) {
+			new DialogUtils().showConfirmationDialog("Initialization error", "Something went wrong.",
+					"JavaFx is not found. Check if JFX is a part of JRE", AlertType.ERROR, e);
+		}
+		return simulationPane;
 	}
 
 	/**
