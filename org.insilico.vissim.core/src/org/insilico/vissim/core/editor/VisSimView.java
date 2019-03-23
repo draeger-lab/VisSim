@@ -105,10 +105,9 @@ public class VisSimView {
 	/**
 	 * Initialize TableView from SimulationResult
 	 */
-	private TableView<double[]> initTable(SimulationResult result) {
-		ObservableList<double[]> data = rearrangeData(result.getLayers().get(0),
-				result.getLayers().get(0).getQuantities());
-		TableView<double[]> table = new TableView<>(data);
+	private TableView<Quantity> initTable(SimulationResult result) {
+		ObservableList<Quantity> data = rearrangeData(result.getLayers().get(0).getQuantities());
+		TableView<Quantity> table = new TableView<>(data);
 		table.getColumns().setAll(createColumns(result.getLayers().get(0).getQuantities().get(0)));
 		return table;
 	}
@@ -116,27 +115,31 @@ public class VisSimView {
 	/**
 	 * Reshuffle simulation values into corresponding columns
 	 */
-	private ObservableList<double[]> rearrangeData(Layer layer, LinkedList<Quantity> quantities) {
+	private ObservableList<Quantity> rearrangeData(LinkedList<Quantity> quantities) {
 		return FXCollections
-				.observableArrayList(IntStream.range(0, layer.getQuantities().size())
-						.mapToObj(r -> IntStream.range(0, quantities.get(r).getResults().length)
-								.mapToDouble(c -> quantities.get(r).getResults()[c]).toArray())
-						.collect(Collectors.toList()));
+				.observableArrayList(quantities);
 	}
+
 
 	/**
 	 * Initialize table header
 	 */
-	private List<TableColumn<double[], Double>> createColumns(Quantity q) {
-		return IntStream.range(0, q.getResults().length).mapToObj(this::createColumn).collect(Collectors.toList());
+	private List<TableColumn<Quantity, String>> createColumns(Quantity q) {
+		return IntStream.range(-1, q.getResults().length).mapToObj(this::createColumn).collect(Collectors.toList());
 	}
 
 	/**
 	 * Create new column
 	 */
-	private TableColumn<double[], Double> createColumn(int c) {
-		TableColumn<double[], Double> col = new TableColumn<>(c + "");
-		col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()[c]));
+	private TableColumn<Quantity, String> createColumn(int c) {
+		TableColumn<Quantity, String> col;
+		if (c == -1) {
+			col = new TableColumn<>("Name");
+			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(param.getValue().getQuantityName()));
+		} else {
+			col = new TableColumn<>(c + "");
+			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(Double.toString(param.getValue().getResults()[c])));
+		}
 		return col;
 	}
 }
