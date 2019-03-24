@@ -1,7 +1,6 @@
 package org.insilico.vissim.core.editor;
 
 import java.io.IOException;
-import java.util.LinkedList;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -9,20 +8,14 @@ import javax.inject.Inject;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.insilico.ui.utils.DialogUtils;
+import org.insilico.vissim.core.chart.ChartType;
+import org.insilico.vissim.core.chart.VisSimChartFactory;
 import org.insilico.vissim.core.services.UIManager;
 import org.insilico.vissim.core.table.TableType;
 import org.insilico.vissim.core.table.VisSimTableFactory;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
-import org.insilico.vissim.sbscl.result.Layer;
-import org.insilico.vissim.sbscl.result.Quantity;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableView;
@@ -48,19 +41,26 @@ public class VisSimView {
 		UIManager.hideBottomWorkbenchPart(service, application);
 		UIManager.hideRightWorkbenchPart(service, application);
 		BorderPane simulationPane = loadFXML("VisSim.fxml");
-		LineChart<Number, Number> lineChart = initChart(simulationResult);
-		Accordion bottom = (Accordion) simulationPane.getBottom();
-		TitledPane titledPane = bottom.getPanes().get(0);
-		titledPane.setText("Details: " + lineChart.getTitle());
-		TableView<?> valuesTable = VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult);
-		titledPane.setContent(valuesTable);
-		simulationPane.setCenter(lineChart);
+		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), "Values", simulationPane);
+		simulationPane.setCenter(VisSimChartFactory.getValuesTable(ChartType.LINE_CHART, simulationResult));
 		parent.setCenter(simulationPane);
 	}
 
 	/**
-	 * Load corresponding FXML configuration file. Show error dialog if not possible.
+	 * Show specified {@code TableView} at the bottom of the workbench; {@code TableView} will be wrapped
+	 * into {@link Accordion}
 	 * */
+	private void setSimulationTable(TableView<?> table, String tableName, BorderPane simulationPane) {
+		Accordion bottom = (Accordion) simulationPane.getBottom();
+		TitledPane titledPane = bottom.getPanes().get(0);
+		titledPane.setText(tableName + simulationResult.getLayers().getFirst().getLayerName());
+		titledPane.setContent(table);
+	}
+
+	/**
+	 * Load corresponding FXML configuration file. Show error dialog if not
+	 * possible.
+	 */
 	private BorderPane loadFXML(String path) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
 		BorderPane simulationPane = null;
@@ -72,31 +72,4 @@ public class VisSimView {
 		}
 		return simulationPane;
 	}
-
-	/**
-	 * Initialize jfx chart for SimulationResult
-	 */
-	@SuppressWarnings("unchecked")
-	private LineChart<Number, Number> initChart(SimulationResult simRes) {
-		final NumberAxis timePointsAxis = new NumberAxis(0, simRes.getTimePoints().length - 1, 1);
-		final NumberAxis valuesAxis = new NumberAxis();
-		final LineChart<Number, Number> chart = new LineChart<>(timePointsAxis, valuesAxis);
-		for (Layer layer : simRes.getLayers()) {
-			chart.setTitle(layer.getLayerName());
-			LinkedList<Quantity> quantities = layer.getQuantities();
-			for (Quantity quantity : quantities) {
-				Series<Number, Number> lineChart = new XYChart.Series<Number, Number>();
-				lineChart.setName(quantity.getQuantityName());
-				ObservableList<Data<Number, Number>> chartData = lineChart.getData();
-				for (int i = 0; i < simRes.getTimePoints().length; i++) {
-					chartData
-							.add(new XYChart.Data<Number, Number>(simRes.getTimePoints()[i], quantity.getResults()[i]));
-				}
-				chart.getData().addAll(lineChart);
-			}
-		}
-		return chart;
-	}
-
-
 }

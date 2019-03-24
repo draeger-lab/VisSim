@@ -19,7 +19,7 @@
    <bottom>
       <Accordion maxHeight="300.0" BorderPane.alignment="BOTTOM_CENTER">
         <panes>
-          <TitledPane animated="true" text="Default name">
+          <TitledPane animated="false" text="Default name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="200.0" />
             </content>

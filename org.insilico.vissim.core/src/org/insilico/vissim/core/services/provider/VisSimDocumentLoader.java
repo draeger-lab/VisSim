@@ -46,7 +46,7 @@ public class VisSimDocumentLoader extends ContextFunction {
 		if (urlVal != null) {
 			try {
 				SimulationFactory factory = new SimulationFactory();
-				SimulationType simulationType = new Utils().getSimulationType(urlVal.toString());
+				SimulationType simulationType = new Utils().getSimulationType(urlVal.toString().replace("file:", ""));
 				if (SimulationType.UNKNOWN_ENTITY.equals(simulationType)) {
 					new DialogUtils().showConfirmationDialog("Unknown simulation type", "Something went wrong.",
 							"This type of data can not be simulated", AlertType.ERROR);
