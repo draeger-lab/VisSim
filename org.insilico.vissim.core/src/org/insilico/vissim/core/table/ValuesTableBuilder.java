@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.insilico.vissim.core.Messages;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
 import org.insilico.vissim.sbscl.result.Quantity;
 
@@ -62,15 +63,15 @@ public class ValuesTableBuilder implements TableBuilder {
 	 */
 	private TableColumn<Quantity, ?> createColumn(int c) {
 		if (c == CHECK_BOX_COLUMN) {
-			TableColumn<Quantity, Boolean> col = new TableColumn<Quantity, Boolean>("");
+			TableColumn<Quantity, Boolean> col = new TableColumn<Quantity, Boolean>(""); //$NON-NLS-1$
 			setFactoriesForCheckBoxCol(col);
 			return col;
 		} else if (c == NAME_COLUMN) {
-			TableColumn<Quantity, String> col = new TableColumn<>("Name");
+			TableColumn<Quantity, String> col = new TableColumn<>(Messages.table_name_col);
 			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(param.getValue().getQuantityName()));
 			return col;
 		} else {
-			TableColumn<Quantity, String> col = new TableColumn<>(c + "");
+			TableColumn<Quantity, String> col = new TableColumn<>(c + ""); //$NON-NLS-1$
 			col.setCellValueFactory(
 					param -> new ReadOnlyObjectWrapper<String>(Double.toString(param.getValue().getResults()[c])));
 			return col;

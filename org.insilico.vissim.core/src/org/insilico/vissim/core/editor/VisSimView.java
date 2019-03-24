@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.insilico.ui.utils.DialogUtils;
+import org.insilico.vissim.core.Messages;
 import org.insilico.vissim.core.chart.ChartType;
 import org.insilico.vissim.core.chart.VisSimChartFactory;
 import org.insilico.vissim.core.services.UIManager;
@@ -40,8 +41,8 @@ public class VisSimView {
 	private void init(BorderPane parent) {
 		UIManager.hideBottomWorkbenchPart(service, application);
 		UIManager.hideRightWorkbenchPart(service, application);
-		BorderPane simulationPane = loadFXML("VisSim.fxml");
-		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), "Values", simulationPane);
+		BorderPane simulationPane = loadFXML(Messages.fxml_file);
+		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), "Values", simulationPane); //$NON-NLS-1$
 		simulationPane.setCenter(VisSimChartFactory.getValuesTable(ChartType.LINE_CHART, simulationResult));
 		parent.setCenter(simulationPane);
 	}
@@ -67,8 +68,8 @@ public class VisSimView {
 		try {
 			simulationPane = (BorderPane) loader.load();
 		} catch (IOException e) {
-			new DialogUtils().showConfirmationDialog("Initialization error", "Something went wrong.",
-					"JavaFx is not found. Check if JFX is a part of JRE", AlertType.ERROR, e);
+			new DialogUtils().showConfirmationDialog(Messages.init_error, Messages.info_general, //$NON-NLS-1$ //$NON-NLS-2$
+					Messages.jfx_not_installed, AlertType.ERROR, e);
 		}
 		return simulationPane;
 	}

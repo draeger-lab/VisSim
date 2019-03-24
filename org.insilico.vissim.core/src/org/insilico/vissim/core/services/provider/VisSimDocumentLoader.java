@@ -8,6 +8,7 @@ import org.eclipse.e4.core.contexts.IEclipseContext;
 import org.eclipse.e4.core.di.IInjector;
 import org.eclipse.e4.ui.model.application.ui.basic.MPart;
 import org.insilico.ui.utils.DialogUtils;
+import org.insilico.vissim.core.Messages;
 import org.insilico.vissim.sbscl.factory.SimulationFactory;
 import org.insilico.vissim.sbscl.simulation.AbstractSimulation;
 import org.insilico.vissim.sbscl.simulation.SimulationType;
@@ -46,18 +47,18 @@ public class VisSimDocumentLoader extends ContextFunction {
 		if (urlVal != null) {
 			try {
 				SimulationFactory factory = new SimulationFactory();
-				SimulationType simulationType = new Utils().getSimulationType(urlVal.toString().replace("file:", ""));
+				SimulationType simulationType = new Utils().getSimulationType(urlVal.toString().replace("file:", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				if (SimulationType.UNKNOWN_ENTITY.equals(simulationType)) {
-					new DialogUtils().showConfirmationDialog("Unknown simulation type", "Something went wrong.",
-							"This type of data can not be simulated", AlertType.ERROR);
+					new DialogUtils().showConfirmationDialog(Messages.unknown_simulation_type_error, Messages.info_general, //$NON-NLS-2$
+							Messages.unknown_data_type_error, AlertType.ERROR);
 					return new SimulationRandomizer().initRandomSimulationResult();
 				} else {
 					AbstractSimulation simulation = factory.getSimulation(simulationType);
 					return simulation.simulate(urlVal.toString());
 				}
 			} catch (Exception e) {
-				new DialogUtils().showConfirmationDialog("Simulation crashed", "Something went wrong.",
-						"Check if SBSCL library properly referenced", AlertType.ERROR, e);
+				new DialogUtils().showConfirmationDialog(Messages.simulation_crashed_error, Messages.info_general, //$NON-NLS-2$
+						Messages.sbscl_not_found_error, AlertType.ERROR, e);
 				return new SimulationRandomizer().initRandomSimulationResult();
 			}
 		}

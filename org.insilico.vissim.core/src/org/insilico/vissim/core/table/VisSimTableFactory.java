@@ -1,6 +1,7 @@
 package org.insilico.vissim.core.table;
 
 import org.insilico.ui.utils.DialogUtils;
+import org.insilico.vissim.core.Messages;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
 
 import javafx.scene.control.TableView;
@@ -17,8 +18,8 @@ public class VisSimTableFactory {
 				try {
 					return ValuesTableBuilder.class.newInstance().buildTable(result);
 				} catch (Exception e) {
-					new DialogUtils().showConfirmationDialog("Initialization error", "Something went wrong.",
-							"Corresponding table con not be initialized", AlertType.ERROR, e);
+					new DialogUtils().showConfirmationDialog("Initialization error", "Something went wrong.", //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.table_not_found_error, AlertType.ERROR, e);
 				}
 			default:
 				return null;
