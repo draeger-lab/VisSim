@@ -22,8 +22,11 @@ public class LineChartBuilder implements ChartBuilder {
 	@SuppressWarnings("unchecked")
 	@Override
 	public LineChart<?, ?> buildChart(SimulationResult result) {
-		final NumberAxis timePointsAxis = new NumberAxis(0, result.getTimePoints().length - 1, 1);
+		double[] timePoints = result.getTimePoints();
+		final NumberAxis timePointsAxis = new NumberAxis(0, timePoints[timePoints.length - 1], timePoints[1]);
+		timePointsAxis.setLabel("Time points (sec.)");
 		final NumberAxis valuesAxis = new NumberAxis();
+		valuesAxis.setLabel("Values");
 		final LineChart<Number, Number> chart = new LineChart<>(timePointsAxis, valuesAxis);
 		for (Layer layer : result.getLayers()) {
 			chart.setTitle(layer.getLayerName());
@@ -41,5 +44,4 @@ public class LineChartBuilder implements ChartBuilder {
 		}
 		return chart;
 	}
-
 }

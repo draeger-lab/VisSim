@@ -12,7 +12,7 @@ import javafx.scene.control.Alert.AlertType;
  * */
 public class VisSimChartFactory {
 	
-	static public LineChart<?,?> getValuesTable(ChartType type, SimulationResult result) {
+	static public LineChart<?,?> getLineChart(ChartType type, SimulationResult result) {
 			switch (type) {
 			case LINE_CHART:
 				try {
