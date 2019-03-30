@@ -7,10 +7,25 @@ import java.net.URI;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+/**
+ * <p>
+ * A Dialog in JavaFX wraps a {@link DialogPane} and provides the necessary API
+ * to present options for simulating {@link SBMLDocument}. In JavaFX 8u40 this
+ * essentially means that the {@link DialogPane} is shown to users inside a
+ * {@link Stage}.
+ * </p>
+ * <p>
+ * Time stamps related data is saved in static manner to ensure consistency
+ * while another instance of this controller can be created from another view
+ * implementation.
+ * </p>
+ *
+ */
 public class SBMLDialog {
 
 	private static final String HELP_URI = "https://draeger-lab.github.io/SBSCL/apidocs/overview-summary.html";
@@ -42,6 +57,11 @@ public class SBMLDialog {
 	private static double timepointDuration = DEFAULT_TIMEPOINT_DURATION;
 	private static boolean isCanceled = false;
 
+	/**
+	 * Initialize corresponding dialog from FXML template
+	 * This resets static time stamps
+	 * 
+	 * */
 	public void initDialog() {
 		resetValues();
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("SBMLDialog.fxml"));
@@ -56,16 +76,9 @@ public class SBMLDialog {
 		timingDialog.showAndWait();
 	}
 
-	public void fireCancel() {
-		setCanceled(true);
-		close();
-	}
-
-	private void close() {
-		Stage stage = (Stage) cancelButton.getScene().getWindow();
-		stage.close();
-	}
-
+	/**
+	 * Closes the dialog and saves provided values
+	 * */
 	public void fireOK() {
 		if (!timePointsTextField.textProperty().get().trim().isEmpty()) {
 			timepointsNumber = Integer.parseInt(timePointsTextField.textProperty().get().trim());
@@ -76,6 +89,26 @@ public class SBMLDialog {
 		close();
 	}
 
+	/**
+	 * Abort simulation for selected file
+	 * */
+	public void fireCancel() {
+		setCanceled(true);
+		close();
+	}
+
+	/**
+	 * Closes related Stage
+	 * */
+	private void close() {
+		Stage stage = (Stage) cancelButton.getScene().getWindow();
+		stage.close();
+	}
+
+	/**
+	 * Provide help documentation about simulation in general. Official SBSCL web resource will be shown.
+	 * Cross-platform implementation. Works for almost all "known" browsers.
+	 * */
 	public void showHelp() {
 		if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 			try {
@@ -85,7 +118,7 @@ public class SBMLDialog {
 			}
 		} else {
 			Runtime rt = Runtime.getRuntime();
-			String[] browsers = {"firefox", "mozilla", "konqueror", "netscape", "opera", "links", "lynx" };
+			String[] browsers = { "firefox", "mozilla", "konqueror", "netscape", "opera", "links", "lynx", "safari" };
 
 			StringBuffer cmd = new StringBuffer();
 			for (int i = 0; i < browsers.length; i++)
@@ -94,26 +127,35 @@ public class SBMLDialog {
 				else
 					cmd.append(String.format(" || %s \"%s\"", browsers[i], HELP_URI));
 			try {
-				rt.exec(new String[] { "sh", cmd.toString()});
+				rt.exec(new String[] { "sh", cmd.toString() });
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+	/**
+	 * Resets time stamps
+	 * */
 	public void resetValues() {
 		timepointsNumber = DEFAULT_TIMEPOINTS_NUMBER;
 		timepointDuration = DEFAULT_TIMEPOINT_DURATION;
 	}
 
+	/**
+	 * Returns amount of time points
+	 * */
 	public int getTimepointsNumber() {
 		return timepointsNumber;
 	}
 
+	/**
+	 * Returns one time stamp duration
+	 * */
 	public double getTimepointDuration() {
 		return timepointDuration;
 	}
-
+	
 	public static boolean isCanceled() {
 		return isCanceled;
 	}
