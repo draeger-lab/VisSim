@@ -2,6 +2,8 @@ package org.insilico.vissim.sbscl.simulation;
 
 import org.insilico.vissim.sbscl.factory.ResultAdapter;
 import org.insilico.vissim.sbscl.factory.SimulationResult;
+import org.insilico.vissim.sbscl.ui.SBMLDialog;
+import org.insilico.vissim.sbscl.utils.SBSCLUtils;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLReader;
 import org.simulator.math.odes.AbstractDESSolver;
@@ -21,24 +23,34 @@ public class SBMLSimulation extends AbstractSimulation {
 	@Override
 	public SimulationResult simulate(String path) throws Exception {
 		SBMLReader reader = new SBMLReader();
-		try {
+		SimulationResult result = null;
 			Model model = reader.readSBML(path).getModel();
 			SBMLinterpreter interpreter = new SBMLinterpreter(model);
 			AbstractDESSolver solver = new RosenbrockSolver();
-			MultiTable solution = solver.solve(interpreter, interpreter.getInitialValues(), generateTimePoints());
-			return new ResultAdapter(solution).getResult();
-		} catch (Exception e) {
-			// throw Ex. and log
-		}
-		return null;
+			SBMLDialog sbmlDialog = new SBMLDialog();
+			sbmlDialog.initDialog();
+			if (SBMLDialog.isCanceled()) {
+				throw new Exception();
+				// TODO: Cancel scenario
+			}
+			double[] tp = getTimePoints(sbmlDialog);
+			MultiTable solution = solver.solve(interpreter, interpreter.getInitialValues(), tp);
+			result = new ResultAdapter(solution).getResult();
+			return result;
 	}
-	
+
 	/**
-	 * Generates time points for simulation
+	 * Produces simulation time points depending on specified values.
 	 * */
-	public double[] generateTimePoints() {
-		// XXX: evaluate how to provide time points: user interaction and automatic generation
-		return null;
+	private double[] getTimePoints(SBMLDialog sbmlDialog) {
+		double[] tp = new double[sbmlDialog.getTimepointsNumber()];
+		double sum = 0.0d;
+		double timepointDuration = sbmlDialog.getTimepointDuration();
+		for (int i = 0; i < sbmlDialog.getTimepointsNumber(); i++) {
+			tp[i] = SBSCLUtils.round(sum, 1);
+			sum += timepointDuration;
+		}
+		return tp;
 	}
 
 }
