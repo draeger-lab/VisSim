@@ -8,6 +8,7 @@ import org.osgi.service.component.annotations.Component;
  * Provides an editor part for <placeholder> files. 
  * @see {@link org.eclipse.fx.code.editor.fx.e4.EditorClassURLProvider}
  */
+@SuppressWarnings("restriction")
 @Component
 public class VisSimEditorProvider implements EditorClassURLProvider {
 	private final static String[] DATA_TYPE = {"xml", "zip"};

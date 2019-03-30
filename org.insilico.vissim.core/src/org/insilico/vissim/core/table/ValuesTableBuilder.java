@@ -1,5 +1,7 @@
 package org.insilico.vissim.core.table;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,12 +32,14 @@ import javafx.util.Callback;
 public class ValuesTableBuilder implements TableBuilder {
 	final static int CHECK_BOX_COLUMN = -2;
 	final static int NAME_COLUMN = -1;
+	static double tickTime;
 
 	/**
 	 * Initialize TableView from SimulationResult
 	 * @return TableView parameterized with {@link Quantity}
 	 */
 	public TableView<?> buildTable(SimulationResult result) {
+		tickTime = result.getTimePoints()[1];
 		ObservableList<Quantity> data = rearrangeData(result.getLayers().get(0).getQuantities());
 		TableView<Quantity> table = new TableView<>(data);
 		table.getColumns().setAll(createColumns(result.getLayers().get(0).getQuantities().get(0)));
@@ -71,7 +75,8 @@ public class ValuesTableBuilder implements TableBuilder {
 			col.setCellValueFactory(param -> new ReadOnlyObjectWrapper<String>(param.getValue().getQuantityName()));
 			return col;
 		} else {
-			TableColumn<Quantity, String> col = new TableColumn<>(c + ""); //$NON-NLS-1$
+			TableColumn<Quantity, String> col = new TableColumn<>(round(c * tickTime, 1) + " sec."); //$NON-NLS-1$
+			col.setPrefWidth(75);
 			col.setCellValueFactory(
 					param -> new ReadOnlyObjectWrapper<String>(Double.toString(param.getValue().getResults()[c])));
 			return col;
@@ -111,5 +116,16 @@ public class ValuesTableBuilder implements TableBuilder {
 				return cell;
 			}
 		});
+	}
+	
+	/**
+	 * Helper function to round doubles.
+	 * */
+	public double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    BigDecimal bd = new BigDecimal(value);
+	    bd = bd.setScale(places, RoundingMode.HALF_UP);
+	    return bd.doubleValue();
 	}
 }

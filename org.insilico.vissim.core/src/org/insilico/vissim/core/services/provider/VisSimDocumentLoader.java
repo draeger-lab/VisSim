@@ -54,7 +54,7 @@ public class VisSimDocumentLoader extends ContextFunction {
 					return new SimulationRandomizer().initRandomSimulationResult();
 				} else {
 					AbstractSimulation simulation = factory.getSimulation(simulationType);
-					return simulation.simulate(urlVal.toString());
+					return simulation.simulate(urlVal.toString().replace("file:", ""));
 				}
 			} catch (Exception e) {
 				new DialogUtils().showConfirmationDialog(Messages.simulation_crashed_error, Messages.info_general, //$NON-NLS-2$
