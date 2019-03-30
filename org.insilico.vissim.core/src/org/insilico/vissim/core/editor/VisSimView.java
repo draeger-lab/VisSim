@@ -35,15 +35,16 @@ public class VisSimView {
 	EModelService service;
 
 	@Inject
-	MApplication application;
+	MApplication application;	
 
 	@PostConstruct
 	private void init(BorderPane parent) {
-		UIManager.hideBottomWorkbenchPart(service, application);
-		UIManager.hideRightWorkbenchPart(service, application);
+		UIManager.setControls(application, service);
+		UIManager.hideBottomWorkbenchPart();
+		UIManager.hideRightWorkbenchPart();
 		BorderPane simulationPane = loadFXML(Messages.fxml_file);
-		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), "Values", simulationPane); //$NON-NLS-1$
-		simulationPane.setCenter(VisSimChartFactory.getValuesTable(ChartType.LINE_CHART, simulationResult));
+		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), simulationPane); //$NON-NLS-1$
+		simulationPane.setCenter(VisSimChartFactory.getLineChart(ChartType.LINE_CHART, simulationResult));
 		parent.setCenter(simulationPane);
 	}
 
@@ -51,10 +52,10 @@ public class VisSimView {
 	 * Show specified {@code TableView} at the bottom of the workbench; {@code TableView} will be wrapped
 	 * into {@link Accordion}
 	 * */
-	private void setSimulationTable(TableView<?> table, String tableName, BorderPane simulationPane) {
+	private void setSimulationTable(TableView<?> table, BorderPane simulationPane) {
 		Accordion bottom = (Accordion) simulationPane.getBottom();
 		TitledPane titledPane = bottom.getPanes().get(0);
-		titledPane.setText(tableName + simulationResult.getLayers().getFirst().getLayerName());
+		titledPane.setText(simulationResult.getLayers().getFirst().getLayerName() + ":");
 		titledPane.setContent(table);
 	}
 
@@ -73,4 +74,9 @@ public class VisSimView {
 		}
 		return simulationPane;
 	}
+
+	public void toggleNav( ) {
+		UIManager.hideNavigationExplorer();
+	}
+	
 }
