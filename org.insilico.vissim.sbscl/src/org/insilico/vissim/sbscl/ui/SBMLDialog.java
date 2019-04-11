@@ -4,8 +4,11 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 
+import org.sbml.jsbml.SBMLDocument;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.layout.GridPane;
@@ -47,14 +50,19 @@ public class SBMLDialog {
 
 	@FXML
 	private javafx.scene.control.Hyperlink help;
+	
+	@FXML
+	private ChoiceBox<String> solverChoiceBox;
 
 	private Dialog<Pair<String, String>> timingDialog = new Dialog<>();
 
 	private final static int DEFAULT_TIMEPOINTS_NUMBER = 25;
 	private final static double DEFAULT_TIMEPOINT_DURATION = 1d;
+	private final static String ROSENBOCK_SOLVER = "RosenbockSolver";
 
 	private static int timepointsNumber = DEFAULT_TIMEPOINTS_NUMBER;
 	private static double timepointDuration = DEFAULT_TIMEPOINT_DURATION;
+	private static String solverType = ROSENBOCK_SOLVER;
 	private static boolean isCanceled = false;
 
 	/**
@@ -86,6 +94,7 @@ public class SBMLDialog {
 		if (!durationTextField.textProperty().get().trim().isEmpty()) {
 			timepointDuration = Double.parseDouble(durationTextField.textProperty().get().trim());
 		}
+		setSolverType(solverChoiceBox.getValue().toString());
 		close();
 	}
 
@@ -162,5 +171,19 @@ public class SBMLDialog {
 
 	public static void setCanceled(boolean isCanceled) {
 		SBMLDialog.isCanceled = isCanceled;
+	}
+
+	/**
+	 * @return the solverType
+	 */
+	public static String getSolverType() {
+		return solverType;
+	}
+
+	/**
+	 * @param solverType the solverType to set
+	 */
+	public static void setSolverType(String solverType) {
+		SBMLDialog.solverType = solverType;
 	}
 }

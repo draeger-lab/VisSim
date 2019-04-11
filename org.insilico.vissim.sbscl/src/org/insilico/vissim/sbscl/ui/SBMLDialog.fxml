@@ -9,126 +9,209 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.collections.*?>
 
-<GridPane hgap="14.0" maxHeight="+Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="246.0" prefWidth="406.0" vgap="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.insilico.vissim.sbscl.ui.SBMLDialog">
-  <children>
-    <HBox maxHeight="-Infinity" maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="1">
-      <children>
-        <Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS">
-               <children>
-                  <Hyperlink fx:id="help" layoutY="1.0" onAction="#showHelp" text="Help" />
-               </children>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></Pane>
-        <Button fx:id="cancelButton" cancelButton="true" minWidth="80.0" mnemonicParsing="false" onAction="#fireCancel" text="Cancel" HBox.hgrow="NEVER">
-          <HBox.margin>
-            <Insets />
-          </HBox.margin>
-        </Button>
-        <HBox alignment="CENTER">
-          <children>
-            <Button minWidth="80.0" mnemonicParsing="false" onAction="#fireOK" text="Ok" HBox.hgrow="NEVER">
-              <HBox.margin>
-                <Insets left="14.0" />
-              </HBox.margin>
-            </Button>
-          </children>
-        </HBox>
-      </children>
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin>
-    </HBox>
-      <HBox prefHeight="173.0" prefWidth="364.0" GridPane.columnIndex="1">
-         <children>
-            <VBox prefHeight="152.0" prefWidth="360.0">
-               <children>
-                  <VBox prefHeight="144.0" prefWidth="350.0">
-                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please specify SBML file simulation method: ">
-                           <VBox.margin>
-                              <Insets bottom="3.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="System Bold" size="13.0" />
-                           </font>
-                        </Text>
-                        <Separator prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                        </Separator>
-                        <RadioButton fx:id="diffSimRButton" mnemonicParsing="false" selected="true" text="Simulation of a differential equation system">
-                           <VBox.margin>
-                              <Insets bottom="5.0" top="10.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </RadioButton>
-                        <HBox prefHeight="20.0" prefWidth="360.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="153.0" text="Amount of time points:">
-                                 <HBox.margin>
-                                    <Insets left="50.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField fx:id="timePointsTextField" prefHeight="25.0" prefWidth="112.0" promptText="25">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="20.0" prefWidth="360.0">
-                           <children>
-                              <Label prefHeight="25.0" prefWidth="153.0" text="Duration (seconds):">
-                                 <HBox.margin>
-                                    <Insets left="50.0" />
-                                 </HBox.margin>
-                              </Label>
-                              <TextField fx:id="durationTextField" prefHeight="25.0" prefWidth="112.0" promptText="1">
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
-                              </TextField>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="3.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="25.0" prefWidth="360.0">
-                     <children>
-                        <RadioButton fx:id="sedSimRButton" disable="true" mnemonicParsing="false" text="Simulation with corresponding SED-ML file">
-                           <VBox.margin>
-                              <Insets bottom="5.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets left="15.0" />
-                           </padding>
-                        </RadioButton>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-  </children>
-  <columnConstraints>
-    <ColumnConstraints hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
-  </columnConstraints>
-  <padding>
-    <Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
-  </padding>
-  <rowConstraints>
-    <RowConstraints maxHeight="+Infinity" minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
-    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="NEVER" />
-  </rowConstraints>
+<GridPane hgap="14.0" maxHeight="+Infinity"
+	maxWidth="+Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefHeight="320.0" prefWidth="406.0" vgap="20.0"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="org.insilico.vissim.sbscl.ui.SBMLDialog">
+	<children>
+		<HBox maxHeight="-Infinity" maxWidth="+Infinity"
+			minHeight="-Infinity" minWidth="-Infinity" GridPane.columnIndex="1"
+			GridPane.rowIndex="1">
+			<children>
+				<Pane maxWidth="+Infinity" HBox.hgrow="ALWAYS">
+					<children>
+						<Hyperlink fx:id="help" layoutY="1.0"
+							onAction="#showHelp" text="Help" />
+					</children>
+					<HBox.margin>
+						<Insets />
+					</HBox.margin>
+				</Pane>
+				<Button fx:id="cancelButton" cancelButton="true"
+					minWidth="80.0" mnemonicParsing="false" onAction="#fireCancel"
+					text="Cancel" HBox.hgrow="NEVER">
+					<HBox.margin>
+						<Insets />
+					</HBox.margin>
+				</Button>
+				<HBox alignment="CENTER">
+					<children>
+						<Button minWidth="80.0" mnemonicParsing="false"
+							onAction="#fireOK" text="Ok" HBox.hgrow="NEVER">
+							<HBox.margin>
+								<Insets left="14.0" />
+							</HBox.margin>
+						</Button>
+					</children>
+				</HBox>
+			</children>
+			<GridPane.margin>
+				<Insets top="5.0" />
+			</GridPane.margin>
+		</HBox>
+		<HBox prefHeight="173.0" prefWidth="364.0"
+			GridPane.columnIndex="1">
+			<children>
+				<VBox prefHeight="214.0" prefWidth="360.0">
+					<children>
+						<VBox prefHeight="144.0" prefWidth="350.0">
+							<children>
+								<Text strokeType="OUTSIDE" strokeWidth="0.0"
+									text="Please specify SBML file simulation method: ">
+									<VBox.margin>
+										<Insets bottom="3.0" right="10.0" top="10.0" />
+									</VBox.margin>
+									<font>
+										<Font name="System Bold" size="13.0" />
+									</font>
+								</Text>
+								<Separator prefWidth="200.0">
+									<VBox.margin>
+										<Insets bottom="5.0" />
+									</VBox.margin>
+								</Separator>
+								<RadioButton fx:id="diffSimRButton"
+									mnemonicParsing="false" selected="true"
+									text="Simulation of a differential equation system">
+									<VBox.margin>
+										<Insets bottom="5.0" top="10.0" />
+									</VBox.margin>
+									<padding>
+										<Insets left="15.0" />
+									</padding>
+								</RadioButton>
+								<HBox prefHeight="20.0" prefWidth="360.0">
+									<children>
+										<Label prefHeight="25.0" prefWidth="153.0"
+											text="Amount of time points:">
+											<HBox.margin>
+												<Insets left="50.0" />
+											</HBox.margin>
+										</Label>
+										<TextField fx:id="timePointsTextField"
+											prefHeight="25.0" prefWidth="112.0" promptText="25">
+											<HBox.margin>
+												<Insets left="10.0" />
+											</HBox.margin>
+										</TextField>
+									</children>
+								</HBox>
+								<HBox prefHeight="20.0" prefWidth="360.0">
+									<children>
+										<Label prefHeight="25.0" prefWidth="153.0"
+											text="Duration (seconds):">
+											<HBox.margin>
+												<Insets left="50.0" />
+											</HBox.margin>
+										</Label>
+										<TextField fx:id="durationTextField"
+											prefHeight="25.0" prefWidth="112.0" promptText="1">
+											<HBox.margin>
+												<Insets left="10.0" />
+											</HBox.margin>
+										</TextField>
+									</children>
+									<VBox.margin>
+										<Insets top="3.0" />
+									</VBox.margin>
+								</HBox>
+							</children>
+						</VBox>
+						<VBox prefHeight="66.0" prefWidth="360.0">
+							<children>
+								<RadioButton fx:id="sedSimRButton" disable="true"
+									mnemonicParsing="false" prefHeight="54.0" prefWidth="316.0"
+									text="Simulation with corresponding SED-ML file">
+									<VBox.margin>
+										<Insets bottom="5.0" />
+									</VBox.margin>
+									<padding>
+										<Insets left="15.0" />
+									</padding>
+								</RadioButton>
+								<Separator prefHeight="29.0" prefWidth="360.0" />
+							</children>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+						</VBox>
+						<HBox prefHeight="100.0" prefWidth="200.0">
+							<children>
+								<HBox prefHeight="60.0" prefWidth="360.0">
+									<children>
+										<HBox prefHeight="88.0" prefWidth="64.0" />
+										<HBox prefHeight="88.0" prefWidth="324.0">
+											<children>
+												<VBox prefHeight="63.0" prefWidth="310.0">
+													<children>
+														<VBox prefHeight="23.0" prefWidth="310.0" />
+														<VBox prefHeight="42.0" prefWidth="324.0">
+															<children>
+																<HBox prefHeight="100.0" prefWidth="200.0">
+																	<children>
+																		<HBox prefHeight="42.0" prefWidth="91.0">
+																			<children>
+																				<Label text="Solver used:">
+																					<HBox.margin>
+																						<Insets top="5.0" />
+																					</HBox.margin>
+																				</Label>
+																			</children>
+																		</HBox>
+																		<HBox prefHeight="100.0" prefWidth="200.0">
+																			<children>
+																				<ChoiceBox value="Rosenbock Solver" 
+																					fx:id="solverChoiceBox"
+																					prefHeight="25.0"
+																					prefWidth="217.0">
+																					<items>
+																						<FXCollections
+																							fx:factory="observableArrayList">
+																							<String fx:value="Rosenbock Solver" />
+																							<String fx:value="Adams Bash Forth Solver" />
+																							<String fx:value="Adams Moulton Solver" />
+																							<String fx:value="Dormand Prince 54 Solver" />
+																							<String fx:value="Dormand Prince 85 Solver" />
+																							<String fx:value="Gragg Bulirisch Stoer Solver" />
+																							<String fx:value="Euler method" />
+																						</FXCollections>
+																					</items>
+																				</ChoiceBox>
+																			</children>
+																		</HBox>
+																	</children>
+																</HBox>
+															</children>
+														</VBox>
+													</children>
+												</VBox>
+											</children>
+										</HBox>
+									</children>
+								</HBox>
+							</children>
+						</HBox>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+	</children>
+	<columnConstraints>
+		<ColumnConstraints hgrow="NEVER"
+			maxWidth="-Infinity" minWidth="-Infinity" />
+		<ColumnConstraints halignment="CENTER"
+			hgrow="ALWAYS" maxWidth="+Infinity" minWidth="-Infinity" />
+	</columnConstraints>
+	<padding>
+		<Insets bottom="14.0" left="14.0" right="14.0" top="14.0" />
+	</padding>
+	<rowConstraints>
+		<RowConstraints maxHeight="Infinity"
+			minHeight="-Infinity" valignment="CENTER" vgrow="ALWAYS" />
+		<RowConstraints maxHeight="-Infinity"
+			minHeight="-Infinity" vgrow="NEVER" />
+	</rowConstraints>
 </GridPane>
