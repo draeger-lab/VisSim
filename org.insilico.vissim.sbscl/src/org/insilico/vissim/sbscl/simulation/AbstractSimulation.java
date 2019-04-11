@@ -11,7 +11,7 @@ import org.insilico.vissim.sbscl.factory.SimulationResult;
  * Base class for VisSim simulation.
  * 
  */
-abstract public class AbstractSimulation {
+abstract public class AbstractSimulation implements ParametrizedSimulation {
 	@Inject
 	ThreadSynchronize sync;
 	

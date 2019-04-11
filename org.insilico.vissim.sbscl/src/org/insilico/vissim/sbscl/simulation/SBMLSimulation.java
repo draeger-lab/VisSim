@@ -8,7 +8,6 @@ import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLReader;
 import org.simulator.math.odes.AbstractDESSolver;
 import org.simulator.math.odes.MultiTable;
-import org.simulator.math.odes.RosenbrockSolver;
 import org.simulator.sbml.SBMLinterpreter;
 
 public class SBMLSimulation extends AbstractSimulation {
@@ -26,10 +25,10 @@ public class SBMLSimulation extends AbstractSimulation {
 		SimulationResult result = null;
 			Model model = reader.readSBML(path).getModel();
 			SBMLinterpreter interpreter = new SBMLinterpreter(model);
-			AbstractDESSolver solver = new RosenbrockSolver();
 			SBMLDialog sbmlDialog = new SBMLDialog();
 			sbmlDialog.initDialog();
-			if (SBMLDialog.isCanceled()) {
+			AbstractDESSolver solver = getSolver(SBMLDialog.getSolverType());
+			if (SBMLDialog.isCanceled() || solver == null) {
 				throw new Exception();
 				// TODO: Cancel scenario
 			}
