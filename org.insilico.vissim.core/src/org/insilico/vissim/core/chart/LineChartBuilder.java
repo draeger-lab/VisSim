@@ -12,6 +12,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
+import javafx.scene.layout.BorderPane;
 
 
 /**
@@ -21,15 +22,15 @@ public class LineChartBuilder implements ChartBuilder {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public LineChart<?, ?> buildChart(SimulationResult result) {
+	public BorderPane buildChart(SimulationResult result) {
 		double[] timePoints = result.getTimePoints();
 		final NumberAxis timePointsAxis = new NumberAxis(0, timePoints[timePoints.length - 1], timePoints[1]);
-		timePointsAxis.setLabel("Time points (sec.)");
+		timePointsAxis.setLabel("Time points (" + result.getTimeEntity() + ")");
 		final NumberAxis valuesAxis = new NumberAxis();
 		valuesAxis.setLabel("Values");
 		final LineChart<Number, Number> chart = new LineChart<>(timePointsAxis, valuesAxis);
+		chart.setTitle(result.getLayers().get(0).getLayerName());
 		for (Layer layer : result.getLayers()) {
-			chart.setTitle(layer.getLayerName());
 			LinkedList<Quantity> quantities = layer.getQuantities();
 			for (Quantity quantity : quantities) {
 				Series<Number, Number> lineChart = new XYChart.Series<Number, Number>();
@@ -42,6 +43,6 @@ public class LineChartBuilder implements ChartBuilder {
 				chart.getData().addAll(lineChart);
 			}
 		}
-		return chart;
+		return new BorderPane(chart);
 	}
 }
