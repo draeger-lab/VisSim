@@ -35,7 +35,8 @@ public class VisSimView {
 	EModelService service;
 
 	@Inject
-	MApplication application;	
+	MApplication application;
+	
 
 	@PostConstruct
 	private void init(BorderPane parent) {
@@ -44,7 +45,7 @@ public class VisSimView {
 		UIManager.hideRightWorkbenchPart();
 		BorderPane simulationPane = loadFXML(Messages.fxml_file);
 		setSimulationTable(VisSimTableFactory.getValuesTable(TableType.VALUES_TABLE, simulationResult), simulationPane); //$NON-NLS-1$
-		simulationPane.setCenter(VisSimChartFactory.getLineChart(ChartType.LINE_CHART, simulationResult));
+		simulationPane.setCenter(VisSimChartFactory.getLineChart(ChartType.DATA_VIEWER_CHART, simulationResult));
 		parent.setCenter(simulationPane);
 	}
 
