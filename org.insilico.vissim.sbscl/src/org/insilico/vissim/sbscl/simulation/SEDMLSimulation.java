@@ -11,8 +11,8 @@ import org.jlibsedml.Libsedml;
 import org.jlibsedml.Output;
 import org.jlibsedml.SEDMLDocument;
 import org.jlibsedml.SedML;
+import org.jlibsedml.execution.IProcessedSedMLSimulationResults;
 import org.jlibsedml.execution.IRawSedmlSimulationResults;
-import org.simulator.math.odes.MultiTable;
 import org.simulator.sedml.SedMLSBMLSimulatorExecutor;
 
 public class SEDMLSimulation extends AbstractSimulation {
@@ -33,13 +33,10 @@ public class SEDMLSimulation extends AbstractSimulation {
 		SedMLSBMLSimulatorExecutor exe = new SedMLSBMLSimulatorExecutor(sedml, wanted, sedmlDir);
 		Map<AbstractTask, List<IRawSedmlSimulationResults>> res = exe.run();
 		if (res == null || res.isEmpty() || !exe.isExecuted()) {
-			// XXX: throw Ex. and log
+			//
 		} else {
-			@SuppressWarnings("rawtypes")
-			Map results = exe.runSimulations();
-			@SuppressWarnings("unchecked")
-			MultiTable solution = (MultiTable) exe.processSimulationResults(wanted, results);
-			return new ResultAdapter(solution).getResult();
+			IProcessedSedMLSimulationResults results = exe.processSimulationResults(wanted, res);
+			return new ResultAdapter(results, sedml.getElementName()).getResult();
 		}
 		return null;
 	}
