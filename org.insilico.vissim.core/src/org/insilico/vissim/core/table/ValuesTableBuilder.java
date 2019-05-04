@@ -57,7 +57,7 @@ public class ValuesTableBuilder implements TableBuilder {
 	 * Initialize table header
 	 */
 	private List<TableColumn<Quantity, ?>> createColumns(Quantity q) {
-		return IntStream.range(CHECK_BOX_COLUMN, q.getResults().length).mapToObj(this::createColumn)
+		return IntStream.range(NAME_COLUMN, q.getResults().length).mapToObj(this::createColumn)
 				.collect(Collectors.toList());
 	}
 
