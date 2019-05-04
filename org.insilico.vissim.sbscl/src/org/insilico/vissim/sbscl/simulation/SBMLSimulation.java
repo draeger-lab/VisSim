@@ -6,6 +6,7 @@ import org.insilico.vissim.sbscl.ui.SBMLDialog;
 import org.insilico.vissim.sbscl.utils.SBSCLUtils;
 import org.sbml.jsbml.Model;
 import org.sbml.jsbml.SBMLReader;
+import org.sbml.jsbml.UnitDefinition;
 import org.simulator.math.odes.AbstractDESSolver;
 import org.simulator.math.odes.MultiTable;
 import org.simulator.sbml.SBMLinterpreter;
@@ -24,17 +25,18 @@ public class SBMLSimulation extends AbstractSimulation {
 		SBMLReader reader = new SBMLReader();
 		SimulationResult result = null;
 			Model model = reader.readSBML(path).getModel();
+			UnitDefinition timeUnitsInstance = model.getTimeUnitsInstance();
+			
 			SBMLinterpreter interpreter = new SBMLinterpreter(model);
 			SBMLDialog sbmlDialog = new SBMLDialog();
 			sbmlDialog.initDialog();
 			AbstractDESSolver solver = getSolver(SBMLDialog.getSolverType());
 			if (SBMLDialog.isCanceled() || solver == null) {
 				throw new Exception();
-				// TODO: Cancel scenario
 			}
 			double[] tp = getTimePoints(sbmlDialog);
 			MultiTable solution = solver.solve(interpreter, interpreter.getInitialValues(), tp);
-			result = new ResultAdapter(solution).getResult();
+			result = new ResultAdapter(solution, timeUnitsInstance.getName()).getResult();
 			return result;
 	}
 
