@@ -8,12 +8,26 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.insilico.vissim.sbscl</groupId>
 	<artifactId>org.insilico.vissim.sbscl</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+
+		<resources>
+			<resource>
+				<directory>.</directory>
+				<includes>
+					<include>META-INF/</include>
+				</includes>
+			</resource>
+		</resources>
+
 		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-source-plugin</artifactId>
+				<version>${tycho.version}</version>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
